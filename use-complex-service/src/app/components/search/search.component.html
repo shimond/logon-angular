@@ -1,0 +1,6 @@
+<h3>Search...</h3>
+<input #txt (input)="textChanged.next(txt.value)" />
+
+<div>
+  Send to Server : {{textToServer | async}}
+</div>

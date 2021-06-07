@@ -1,0 +1,12 @@
+<h1>CURRENT COUNTER IS {{count}}</h1>
+<app-counter-best-practice></app-counter-best-practice>
+<app-counter-best-practice></app-counter-best-practice>
+<button (click)="showHide = !showHide">Show / Hide</button>
+<ng-container *ngIf="showHide">
+  <app-counter-best-practice></app-counter-best-practice>
+  <app-counter-best-practice></app-counter-best-practice>
+  <app-counter-best-practice></app-counter-best-practice>
+</ng-container>
+
+
+<app-search></app-search>

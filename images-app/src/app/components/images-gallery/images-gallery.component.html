@@ -1,0 +1,12 @@
+<div class="grid">
+  <div class="center-content" >
+    <div *ngIf="selectedImage">
+      <button (click)="play()">Play</button>
+      <img [src]="selectedImage.imageUrl">
+    </div>
+  </div>
+  <div>
+    <app-image-list [images]="images" [selectedImage]="selectedImage" (imageClicked)="setSelectedImage($event.id)">
+    </app-image-list>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="flex-it">
+  <div class="item" *ngFor="let item of images" (click)="onImageClick(item)" [class.selected]="selectedImage === item">
+    <img [src]="item.imageUrl" />
+    <div>
+      {{item.title}}
+    </div>
+  </div>
+</div>

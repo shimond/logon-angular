@@ -1,0 +1,11 @@
+.flex-it {
+  display: flex;
+  justify-content: space-around;
+  .item {
+    cursor: pointer;
+    text-align: center;
+    &.selected {
+      border: 3px solid gold;
+    }
+  }
+}
