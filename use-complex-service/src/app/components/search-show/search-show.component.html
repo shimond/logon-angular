@@ -1,0 +1,15 @@
+<input (input)="textChanged.next(txt.value)" #txt />
+
+<div class="shows">
+  <div *ngFor="let show of shows$ | async" class="show-item"
+
+    >
+    <!-- [ngStyle]="{'background-image': 'url('+show.image.medium+')'}" -->
+    <div> {{show.name}}</div>
+    <div [innerHtml]="show.summary"></div>
+    <div><img [src]="show.image.medium"></div>
+
+
+
+  </div>
+</div>

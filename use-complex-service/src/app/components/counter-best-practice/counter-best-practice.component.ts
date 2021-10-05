@@ -14,9 +14,8 @@ export class CounterBestPracticeComponent implements OnInit {
   constructor(private countService: CountService) { }
 
   ngOnInit(): void {
-    this.count$ = this.countService.counter$.pipe(
-      map(x => x * 10),
-      filter(x => x % 20 == 0));
+    // this.count$ = this.countService.counter$;
+    this.count$ = this.countService.counter$.pipe(filter(x => x % 2 == 0), map(x => x * 100), debounceTime(2000));
   }
 
   plus() {
@@ -24,7 +23,6 @@ export class CounterBestPracticeComponent implements OnInit {
   }
   minus() {
     this.countService.minus();
-
   }
 
 }
