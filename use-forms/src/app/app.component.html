@@ -1,5 +1,6 @@
 <form [formGroup]="personFormGroup" (ngSubmit)="save()">
   <div>
+
     <input formControlName="fullName">
     <div *ngIf="personFormGroup.controls.fullName.invalid">
       <ul>
@@ -15,6 +16,16 @@
         <li *ngFor="let errorName of getErrorsRules(personFormGroup.controls.age.errors)">{{errorName}}</li>
       </ul>
     </div>
+  </div>
+
+
+   <div formGroupName="address">
+    <h2>Address</h2>
+    <label>Country</label>
+    <input formControlName="country">
+
+    <label>City</label>
+    <input formControlName="city">
   </div>
 
   <div>

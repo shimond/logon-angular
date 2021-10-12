@@ -2,6 +2,7 @@ import { Person } from './models/person.model';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime, filter } from 'rxjs/operators';
+import { merge, combineLatest } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,7 +16,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  personToEdit: Person = { fullName: 'David Cohen', age: 99, isAdmin: false };
+  personToEdit: Person = { fullName: 'David Cohen', age: 99, isAdmin: false, address:{city:'Jerusalem', country:'Israel'} };
 
 
   validateIsEven(control: AbstractControl): ValidationErrors | null {
@@ -33,9 +34,18 @@ export class AppComponent implements OnInit {
       {
         fullName: [this.personToEdit.fullName, [Validators.required, Validators.maxLength(15)]],
         age: [this.personToEdit.age, [Validators.max(140), Validators.required, this.validateIsEven]],
-        isAdmin: [this.personToEdit.isAdmin]
+        isAdmin: [this.personToEdit.isAdmin],
+        address: this.formBuilder.group({
+          city:[this.personToEdit.address.city],
+          country:[this.personToEdit.address.country, [Validators.required]]
+        })
       }
     );
+
+
+    combineLatest([this.personFormGroup.controls.fullName.valueChanges, this.personFormGroup.controls.age.valueChanges]).subscribe(x=>{
+      console.log('CHANGED', x);
+    })
 
     this.personFormGroup.valueChanges.pipe(filter(x => this.personFormGroup.valid), debounceTime(1000)).subscribe(value => {
       console.log('OnValueChanges', value);
