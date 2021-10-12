@@ -1,0 +1,59 @@
+<form [formGroup]="personFormGroup" (ngSubmit)="save()">
+  <div>
+    <input formControlName="fullName">
+    <div *ngIf="personFormGroup.controls.fullName.invalid">
+      <ul>
+        <li *ngFor="let errorName of getErrorsRules(personFormGroup.controls.fullName.errors)">{{errorName}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <input formControlName="age" type="number">
+    <div *ngIf="personFormGroup.controls.age.invalid">
+      <ul>
+        <li *ngFor="let errorName of getErrorsRules(personFormGroup.controls.age.errors)">{{errorName}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <label>Is Admin:</label>
+    <input formControlName="isAdmin" type="checkbox">
+    <!-- <select formControlName="isAdmin">
+      <option [value]="true">{{true}}</option>
+      <option [value]="false">{{false}}</option>
+    </select> -->
+  </div>
+  <div>
+    <button [disabled]="personFormGroup.invalid">Save</button>
+  </div>
+
+</form>
+
+<ul>
+  <li>Value : {{personFormGroup.value | json}}</li>
+  <li>Valid : {{personFormGroup.valid}}</li>
+  <li>Dirty : {{personFormGroup.dirty}}</li>
+  <li>Enabled : {{personFormGroup.enabled}}</li>
+</ul>
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Original object</th>
+      <th>Form Object</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <pre>{{personToEdit | json}}</pre>
+      </td>
+      <td>
+        <pre>{{personFormGroup.value| json}}</pre>
+      </td>
+    </tr>
+  </tbody>
+</table>
