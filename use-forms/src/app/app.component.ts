@@ -2,7 +2,7 @@ import { Person } from './models/person.model';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime, filter } from 'rxjs/operators';
-import { merge, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,6 +11,7 @@ import { merge, combineLatest } from 'rxjs';
 export class AppComponent implements OnInit {
 
   personFormGroup!: FormGroup;
+  divNumber = 5;
 
   get addressGroups(): FormGroup[] {
     const array = this.personFormGroup.controls.addresses as FormArray;
@@ -21,7 +22,7 @@ export class AppComponent implements OnInit {
 
   }
 
-  personToEdit: Person = { hobbies:['C#', 'Java'], fullName: 'David Cohen', age: 99, isAdmin: false, addresses: [{ city: 'Jerusalem', country: 'Israel' }, { city: 'Eilat', country: 'Israel' },], adminName: 'MyAdminName' };
+  personToEdit: Person = { hobbies: ['C#', 'Java'], fullName: 'David Cohen', age: 99, isAdmin: false, addresses: [{ city: 'Jerusalem', country: 'Israel' }, { city: 'Eilat', country: 'Israel' },], adminName: 'MyAdminName' };
 
   createAddress() {
     return this.formBuilder.group({
@@ -36,7 +37,7 @@ export class AppComponent implements OnInit {
 
   validateIsEven(control: AbstractControl): ValidationErrors | null {
     let number = +control.value;
-    if (number % 2 === 0) {
+    if (number % this.divNumber === 0) {
       return null; // no errors!
     }
 
@@ -49,9 +50,9 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.personFormGroup = this.formBuilder.group(
       {
-        hobbies:[[]],
+        hobbies: [[]],
         fullName: [null, [Validators.required, Validators.maxLength(15)]],
-        age: [null, [Validators.max(140), Validators.required, this.validateIsEven]],
+        age: [null, [Validators.max(140), Validators.required, (p: any) => this.validateIsEven(p)]],
         isAdmin: [null],
         addresses: this.formBuilder.array([]),
         adminName: [null, [Validators.maxLength(23)]]
@@ -76,10 +77,16 @@ export class AppComponent implements OnInit {
 
     this.fillAddress(this.personToEdit.addresses.length);
     this.personFormGroup.patchValue(this.personToEdit);
-    
+
     // setTimeout(() => {
-    //   this.personFormGroup.controls.hobbies.setValue(['Basketball', 'Swimming']);
+    //    this.personFormGroup.controls.hobbies.setValue(['Basketball', 'Swimming']);
     // }, 10000);
+
+    // setTimeout(function() {
+    //    this.personFormGroup.controls.hobbies.setValue(['Basketball', 'Swimming']);
+    // }, 10000);
+
+
   }
 
   removeAddress(idxToRemove: number) {
