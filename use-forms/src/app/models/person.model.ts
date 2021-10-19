@@ -2,9 +2,10 @@ export interface Person {
   fullName: string;
   age: number;
   isAdmin: boolean;
-  address: Address;
+  addresses: Address[];
+  adminName: string;
+  hobbies: string[];
 }
-
 
 export interface Address {
   city: string;

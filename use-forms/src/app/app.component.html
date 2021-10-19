@@ -8,7 +8,9 @@
       </ul>
     </div>
   </div>
-
+<div>
+  <app-mulit-select-list formControlName="hobbies" header="Hobbies"></app-mulit-select-list>
+</div>
   <div>
     <input formControlName="age" type="number">
     <div *ngIf="personFormGroup.controls.age.invalid">
@@ -19,23 +21,28 @@
   </div>
 
 
-   <div formGroupName="address">
-    <h2>Address</h2>
-    <label>Country</label>
-    <input formControlName="country">
-
-    <label>City</label>
-    <input formControlName="city">
+  <button type="button" (click)="addAddress()">Add address</button>
+  <div *ngIf="addressGroups.length">
+    <h2>Addresses</h2>
+    <div *ngFor="let address of addressGroups;let index=index" [formGroup]="address">
+      <label>Country</label>
+      <input formControlName="country">
+      <label>City</label>
+      <input formControlName="city">
+      <button type="button" (click)="removeAddress(index)">Remove</button>
+      <hr>
+    </div>
   </div>
 
   <div>
     <label>Is Admin:</label>
     <input formControlName="isAdmin" type="checkbox">
-    <!-- <select formControlName="isAdmin">
-      <option [value]="true">{{true}}</option>
-      <option [value]="false">{{false}}</option>
-    </select> -->
   </div>
+
+  <div>
+    <app-label-input formControlName="adminName" label="Admin name (test label):"></app-label-input>
+  </div>
+
   <div>
     <button [disabled]="personFormGroup.invalid">Save</button>
   </div>

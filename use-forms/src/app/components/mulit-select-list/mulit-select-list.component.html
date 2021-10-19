@@ -1,0 +1,10 @@
+<h2>{{header}}</h2>
+<div>
+  <div>
+    <input [formControl]="selectAllControl" type="checkbox"> All
+  </div>
+
+  <div *ngFor="let item of controls;let index = index">
+    <input type="checkbox" [formControl]="item"> {{options[index]}}
+  </div>
+</div>

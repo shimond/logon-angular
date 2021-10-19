@@ -1,6 +1,6 @@
 import { Person } from './models/person.model';
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime, filter } from 'rxjs/operators';
 import { merge, combineLatest } from 'rxjs';
 @Component({
@@ -12,12 +12,27 @@ export class AppComponent implements OnInit {
 
   personFormGroup!: FormGroup;
 
+  get addressGroups(): FormGroup[] {
+    const array = this.personFormGroup.controls.addresses as FormArray;
+    return array.controls.map(x => x as FormGroup);
+  }
+
   constructor(private formBuilder: FormBuilder) {
 
   }
 
-  personToEdit: Person = { fullName: 'David Cohen', age: 99, isAdmin: false, address:{city:'Jerusalem', country:'Israel'} };
+  personToEdit: Person = { hobbies:['C#', 'Java'], fullName: 'David Cohen', age: 99, isAdmin: false, addresses: [{ city: 'Jerusalem', country: 'Israel' }, { city: 'Eilat', country: 'Israel' },], adminName: 'MyAdminName' };
 
+  createAddress() {
+    return this.formBuilder.group({
+      city: [null],
+      country: [null, [Validators.required]]
+    })
+  }
+  addAddress() {
+    const array = this.personFormGroup.controls.addresses as FormArray;
+    array.push(this.createAddress());
+  }
 
   validateIsEven(control: AbstractControl): ValidationErrors | null {
     let number = +control.value;
@@ -29,28 +44,53 @@ export class AppComponent implements OnInit {
   }
 
 
+
+
   ngOnInit(): void {
     this.personFormGroup = this.formBuilder.group(
       {
-        fullName: [this.personToEdit.fullName, [Validators.required, Validators.maxLength(15)]],
-        age: [this.personToEdit.age, [Validators.max(140), Validators.required, this.validateIsEven]],
-        isAdmin: [this.personToEdit.isAdmin],
-        address: this.formBuilder.group({
-          city:[this.personToEdit.address.city],
-          country:[this.personToEdit.address.country, [Validators.required]]
-        })
+        hobbies:[[]],
+        fullName: [null, [Validators.required, Validators.maxLength(15)]],
+        age: [null, [Validators.max(140), Validators.required, this.validateIsEven]],
+        isAdmin: [null],
+        addresses: this.formBuilder.array([]),
+        adminName: [null, [Validators.maxLength(23)]]
       }
     );
 
+    this.personFormGroup.controls.isAdmin.valueChanges.subscribe(isAdmin => {
+      if (isAdmin) {
+        this.personFormGroup.controls.adminName.enable();
+      } else {
+        this.personFormGroup.controls.adminName.disable();
+      }
+    });
 
-    combineLatest([this.personFormGroup.controls.fullName.valueChanges, this.personFormGroup.controls.age.valueChanges]).subscribe(x=>{
-      console.log('CHANGED', x);
+
+    combineLatest([this.personFormGroup.controls.fullName.valueChanges, this.personFormGroup.controls.age.valueChanges]).subscribe(x => {
     })
 
     this.personFormGroup.valueChanges.pipe(filter(x => this.personFormGroup.valid), debounceTime(1000)).subscribe(value => {
-      console.log('OnValueChanges', value);
       this.save();
     });
+
+    this.fillAddress(this.personToEdit.addresses.length);
+    this.personFormGroup.patchValue(this.personToEdit);
+    
+    // setTimeout(() => {
+    //   this.personFormGroup.controls.hobbies.setValue(['Basketball', 'Swimming']);
+    // }, 10000);
+  }
+
+  removeAddress(idxToRemove: number) {
+    const array = this.personFormGroup.controls.addresses as FormArray;
+    array.removeAt(idxToRemove);
+  }
+
+  fillAddress(length: number) {
+    for (let index = 0; index < length; index++) {
+      this.addAddress();
+    }
   }
 
   getErrorsRules(errorList: any) {
