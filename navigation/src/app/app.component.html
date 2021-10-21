@@ -1,0 +1,27 @@
+<h1>My Logon App</h1>
+<div>
+  <a routerLink="/login" routerLinkActive="activeLink">Login</a> |
+  <a routerLink="/home" routerLinkActive="activeLink">Home</a> |
+  <a routerLink="/about" routerLinkActive="activeLink">About</a> |
+  <a routerLink="/admin" routerLinkActive="activeLink">Admin</a> |
+  <a routerLink="/kefel" routerLinkActive="activeLink">Kefel</a>|
+  <a routerLink="/kefel" [queryParams]="{length:4, name:'shimon'}" routerLinkActive="activeLink">Kefel (4 * 4)</a>
+
+</div>
+<div>
+  <marquee>Text </marquee>
+</div>
+<div>
+  <router-outlet></router-outlet>
+</div>
+
+
+<!--
+
+  http://zap.co.il/Hp/Printers/hp87ttr1?order=true&page=1#wow
+
+  1.queyString = after ? seperate by & // not a routing rule . DONE
+  2.hash = after # // not a rounting rule
+  3.url Parameter // routing rule
+
+ -->

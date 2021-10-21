@@ -1,0 +1,12 @@
+<!-- <div style="display: grid;grid-template-columns: repeat({{length}}, 1fr);"> -->
+<div style="display: grid;" [ngStyle]="{'grid-template-columns': 'repeat('+ (length$ | async) +', 1fr)'}">
+  <div *ngFor="let item of items$ | async" class="item"
+    [routerLink]="['/','result', item.x, item.y]"
+
+  >
+  <!-- (click)="goToResult(item.x, item.y)" -->
+  <div>
+      {{item.x}} * {{item.y}}
+    </div>
+  </div>
+</div>

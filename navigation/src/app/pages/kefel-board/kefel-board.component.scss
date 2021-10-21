@@ -1,0 +1,12 @@
+.item {
+  text-align: center;
+  border: 1px solid black;
+
+  &:hover {
+    background-color: cadetblue;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  margin: 4px;
+}
