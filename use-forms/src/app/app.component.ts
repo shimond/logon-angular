@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { debounceTime, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,8 +19,10 @@ export class AppComponent implements OnInit {
     return array.controls.map(x => x as FormGroup);
   }
 
-  constructor(private formBuilder: FormBuilder) {
-
+  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+    http.get("http://localhost:9900/api/test/agents/events").subscribe(() => {
+      console.log('wow');
+    });
   }
 
   personToEdit: Person = { hobbies: ['C#', 'Java'], fullName: 'David Cohen', age: 99, isAdmin: false, addresses: [{ city: 'Jerusalem', country: 'Israel' }, { city: 'Eilat', country: 'Israel' },], adminName: 'MyAdminName' };

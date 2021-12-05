@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { AddressInputComponent } from './components/address-input/address-input.component';
 import { LabelInputComponent } from './components/label-input/label-input.component';
 import { MulitSelectListComponent } from './components/mulit-select-list/mulit-select-list.component';
-
+import {HttpClientModule  } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +17,8 @@ import { MulitSelectListComponent } from './components/mulit-select-list/mulit-s
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
